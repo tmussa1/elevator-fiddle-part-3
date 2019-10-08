@@ -30,7 +30,7 @@ public class DeliveryPerson extends Person implements Passenger{
     }
 
     @Override
-    public void setCurrrentFloor(int currentFloor) {
+    public void setCurrentFloor(int currentFloor) {
     // TODO: implement
     }
 

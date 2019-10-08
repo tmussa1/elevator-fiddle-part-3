@@ -207,7 +207,7 @@ public class ElevatorTest {
     public void testArriveOnFloor() {
         Address addr = new Address(1, 6, 0);
         Passenger p = new Resident("Louis", "Armstrong", addr);
-        p.setCurrrentFloor(1);
+        p.setCurrentFloor(1);
         p.setDestination(6);
         assertEquals(p.getCurrentFloor(),1);
         assertEquals(p.getDestination(),6);
@@ -246,7 +246,7 @@ public class ElevatorTest {
     public void testDeliveryPerson(){
         Address addr = new Address(4, 5, 2);
         DeliveryPerson dp = new DeliveryPerson("Jamie","Gottlieb", addr);
-        dp.setCurrrentFloor(5);
+        dp.setCurrentFloor(5);
         String ringMsg ="";
 
         Floor f = building.getFloor(5);

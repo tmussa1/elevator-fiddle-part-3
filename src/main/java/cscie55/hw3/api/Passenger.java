@@ -8,7 +8,7 @@ public interface Passenger {
 
 	int getCurrentFloor();
 
-	void setCurrrentFloor(int currentFloor);
+	void setCurrentFloor(int currentFloor);
 
 	void arriveOnFloor(int arrivalFloor);
 

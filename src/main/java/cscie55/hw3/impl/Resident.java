@@ -35,7 +35,7 @@ public class Resident extends Person implements Passenger {
             if (apartment.getKey() == getDoorKey()) {
                 try {
                     apartment.addResident(this);
-                    this.setCurrrentFloor(apartment.getFloorId());
+                    this.setCurrentFloor(apartment.getFloorId());
                 } catch (TooManyResidentsException tmr) {
                     // log error
                 }
@@ -66,7 +66,7 @@ public class Resident extends Person implements Passenger {
     }
 
     @Override
-    public void setCurrrentFloor(int currentFloor) {
+    public void setCurrentFloor(int currentFloor) {
         this.currentFloor = currentFloor;
     }
 
@@ -74,7 +74,7 @@ public class Resident extends Person implements Passenger {
     public void arriveOnFloor(int arrivalFloor) {
         //TODO: set the state properties of the resident to reflect their arrival
         this.setDestination(Building.UNDEFINED_FLOOR);
-        this.setCurrrentFloor(arrivalFloor);
+        this.setCurrentFloor(arrivalFloor);
     }
 
     public int getDoorKey() {
