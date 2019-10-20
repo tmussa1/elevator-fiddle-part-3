@@ -3,21 +3,8 @@ package cscie55.hw3.impl;
 
 public class Address {
 
-	/**
-	 * buildingId in the Address object
-	 */
 	private int buildingId;
-
-
-	/**
-	 * the id of the Floor where the Apartment is situated
-	 */
-
 	private int floorId;
-
-	/**
-	 * Id of this Apartment
-	 */
 	private int apartmentId;
 
 

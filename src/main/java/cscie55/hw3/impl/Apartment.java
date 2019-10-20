@@ -23,12 +23,6 @@ public class Apartment {
 		return residents;
 	}
 
-	/**
-	 * Constructor
-	 * @param id  the id of the apartment
-	 * @param floorId the id of the Floor where this apartment is located.
-	 * @see Floor
-	 */
 	public Apartment(int id, int floorId){
 		this.id = id;
 		this.floorId = floorId;
@@ -57,9 +51,14 @@ public class Apartment {
 	}
 
 	public int getKey(){
-		//TODO: implement by returning the value of hashCode()
+		return hashCode();
 	}
-	@Override public int hashCode(){
-		//TODO: Implement hashCode()
+	@Override
+	public int hashCode(){
+		int prime = 569;
+		int hash = (523 * (floorId + bldgId) * MAX_RESIDENTS) % prime;
+		hash *= residents.size();
+		return hash;
 	}
+
 }

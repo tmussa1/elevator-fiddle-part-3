@@ -9,66 +9,86 @@ import java.util.*;
 
 public class Elevator {
 
-	private int currentFloor = 1;
+	private int currentFloor;
 	private Floor[] floors;
 	public final static int CAPACITY = 10;
 	private List<List<Passenger>> passengers = new ArrayList<>();
-
+	private enum direction{ UP, DOWN};
+	private direction upOrDown;
+	private int incrementFloor = 1;
     private static final Logger LOGGER = LogManager.getLogger(Elevator.class.getName());
 
-	/**
-	 * Constructor
-	 * This method populates the new List<List<Passenger>> object to track passengers onboard
-	 *
-	 * @param floors floors is the array of Floor objects, as in HW 2.
-	 */
 	public Elevator(Floor[] floors){
-		currentFloor = 1;;
+		currentFloor = 1;
 		this.floors = floors;
 		int n = 0;
 		while (n < Building.TOTAL_NUM_OF_FLOORS){
 			this.passengers.add(new ArrayList<Passenger>());
 			n++;
 		}
+		this.upOrDown = direction.UP;
 	}
 
-		// TODO: as in HW 1 & 2, the elevator moves up, dropping passengers along the way
-		/**
-		 * moves the elevator
-		 */
-		public void move() {
+	public void move() {
+		this.incrementFloor++;
 
+		if(this.incrementFloor % (2 * Building.TOTAL_NUM_OF_FLOORS) < Building.TOTAL_NUM_OF_FLOORS){
+			this.upOrDown = direction.UP;
+			this.currentFloor = incrementFloor % (Building.TOTAL_NUM_OF_FLOORS + 1);
+			addPassengers(passengers.get(currentFloor), floors[currentFloor].getPassengersGoingUp());
+		} else {
+			this.upOrDown = direction.DOWN;
+			this.currentFloor = Building.TOTAL_NUM_OF_FLOORS - (this.incrementFloor % Building.TOTAL_NUM_OF_FLOORS);
+			addPassengers(passengers.get(currentFloor), floors[currentFloor].getDownwardBound());
 		}
 
-	public void boardPassenger(Passenger passenger) throws ElevatorFullException {
-		//TODO: get destination of passenger and use it to add to passengers traveling to that floor
-		// throw Exception if > 10 try to board
-		// Use the LOGGER.error() method to report your error to the log file
+		unloadPassengers();
+	}
 
+	private void addPassengers(List<Passenger> passengers, ArrayDeque<Passenger> passengersWaiting) {
+		while(passengers.size() <= CAPACITY){
+			passengers.add(passengersWaiting.poll());
+		}
+	}
+
+	public void boardPassenger(Passenger passenger) throws ElevatorFullException{
+		try{
+			passengers.get(passenger.getDestination()).add(passenger);
+			if(passengers.get(passenger.getDestination()).size() > CAPACITY){
+				throw new ElevatorFullException("More than 10 people can not board");
+			}
+			passenger.setCurrentFloor(Building.UNDEFINED_FLOOR);
+		} catch(ElevatorFullException elevatorException){
+			LOGGER.error("Error " + elevatorException.getCause());
+		}
 	}
 
 	private void unloadPassengers() {
-		// TODO: remove passengers destined for the floor at this stop. Add Residents to the residents collection.
 
+		passengers.remove(passengers.get(currentFloor));
+
+		for(Passenger passenger : passengers.get(currentFloor)){
+			if(passenger instanceof Resident) {
+				floors[currentFloor - 1].getResidents().add(passenger);
+			}
+		}
 	}
 
 	public int getCurrentFloor() {
-			//TODO: implement
-	}
-
-	private void setCurrentFloor(int floorNum) {
-		// TODO: Optional. might be handy. Delete if you don't want it
-		currentFloor = floorNum;
+		return currentFloor;
 	}
 
 	public String toString() {
-		// TODO: impl toString()
-		return "Floor "+currentFloor +": "+ getNumberPassengers()+" passengers";
+		return "Elevator is going " + upOrDown.toString() +
+				" current Floor is "+currentFloor +" : "+ getNumberPassengers()+" passengers";
 	}
 
 	public int getNumberPassengers() {
-		//TODO: calculate and return the number of passengers on board the elevator
-
+		int passengerCount = 0;
+		for(List<Passenger> passengersEachFloor : passengers){
+			passengerCount += passengersEachFloor.size();
+		}
+		return passengerCount;
 	}
 
 }

@@ -3,41 +3,44 @@ package cscie55.hw3.impl;
 import cscie55.hw3.api.Passenger;
 import cscie55.hw3.api.Person;
 
-
-// TODO: add fields to DeliveryPerson class similar to Resident class
-
 public class DeliveryPerson extends Person implements Passenger{
+
+    private int currentFloor;
+    private int destinationFloor;
+    private Address address;
+    private static int firstFloor = 1;
+
 
     public DeliveryPerson(String firstName, String lastName, Address address){
         super(firstName, lastName, address);
-        // TODO: add initializers to constructorOOR;
+        this.currentFloor = 1;
+        this.destinationFloor = Building.UNDEFINED_FLOOR;
+        this.address = address;
     }
     @Override
     public int getDestination() {
-    // TODO: implement
-        return 0;
+        return destinationFloor;
     }
 
     @Override
     public void setDestination(int destinationFloor) {
-     // TODO: implement
+      this.destinationFloor = destinationFloor;
     }
 
     @Override
     public int getCurrentFloor() {
-        // TODO: implement
-        return 0;
+        return currentFloor;
     }
 
     @Override
     public void setCurrentFloor(int currentFloor) {
-    // TODO: implement
+       this.currentFloor = currentFloor;
     }
 
     @Override
     public void arriveOnFloor(int arrivalFloor) {
-     // TODO: implement. Set the state of the DeliveryPerson. Their currentFloor is the arrival flor.
-        // TODO: but the delivery person must return to floor 1 so set destination accordingly.
+        this.currentFloor = arrivalFloor;
+        this.destinationFloor = firstFloor;
     }
 
     public String ringApartment(Apartment apt){
@@ -45,7 +48,7 @@ public class DeliveryPerson extends Person implements Passenger{
     }
 
     public int getDoorKey() {
-        // TODO: implement
         return 0;
     }
+
 }

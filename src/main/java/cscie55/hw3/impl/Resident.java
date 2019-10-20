@@ -4,12 +4,15 @@ import cscie55.hw3.api.Passenger;
 import cscie55.hw3.api.Person;
 import cscie55.hw3.exception.KeyDoesNotFitException;
 import cscie55.hw3.exception.TooManyResidentsException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Resident extends Person implements Passenger {
 
     private int destinationFloor;
     private int currentFloor;
-    private final int doorKey; // this value is derived from hashCode() of address
+    private final int doorKey;
+    private static final Logger LOGGER = LogManager.getLogger(Resident.class.getName());
 
     /**
      * This class' constructor requires parameters that are passed to the super class.
@@ -37,7 +40,7 @@ public class Resident extends Person implements Passenger {
                     apartment.addResident(this);
                     this.setCurrentFloor(apartment.getFloorId());
                 } catch (TooManyResidentsException tmr) {
-                    // log error
+                    LOGGER.error("Error opening the door");
                 }
             } else {
                 throw new KeyDoesNotFitException("You don't have permission to enter this apartment");
@@ -72,9 +75,8 @@ public class Resident extends Person implements Passenger {
 
     @Override
     public void arriveOnFloor(int arrivalFloor) {
-        //TODO: set the state properties of the resident to reflect their arrival
+        this.setDestination(getCurrentFloor());
         this.setDestination(Building.UNDEFINED_FLOOR);
-        this.setCurrentFloor(arrivalFloor);
     }
 
     public int getDoorKey() {
