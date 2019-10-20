@@ -55,10 +55,7 @@ public class Apartment {
 	}
 	@Override
 	public int hashCode(){
-		int prime = 569;
-		int hash = (523 * (floorId + bldgId) * MAX_RESIDENTS) % prime;
-		hash *= residents.size();
-		return hash;
+		return address.hashCode();
 	}
 
 }

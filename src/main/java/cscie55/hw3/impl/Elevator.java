@@ -32,14 +32,14 @@ public class Elevator {
 	public void move() {
 		this.incrementFloor++;
 
-		if(this.incrementFloor % (2 * Building.TOTAL_NUM_OF_FLOORS) < Building.TOTAL_NUM_OF_FLOORS){
+		if((this.incrementFloor % (2 * Building.TOTAL_NUM_OF_FLOORS)) < Building.TOTAL_NUM_OF_FLOORS){
 			this.upOrDown = direction.UP;
 			this.currentFloor = incrementFloor % (Building.TOTAL_NUM_OF_FLOORS + 1);
-			addPassengers(passengers.get(currentFloor), floors[currentFloor].getPassengersGoingUp());
+			//addPassengers(passengers.get(currentFloor - 1), floors[currentFloor - 1].getPassengersGoingUp());
 		} else {
 			this.upOrDown = direction.DOWN;
 			this.currentFloor = Building.TOTAL_NUM_OF_FLOORS - (this.incrementFloor % Building.TOTAL_NUM_OF_FLOORS);
-			addPassengers(passengers.get(currentFloor), floors[currentFloor].getDownwardBound());
+			//addPassengers(passengers.get(currentFloor), floors[currentFloor].getDownwardBound());
 		}
 
 		unloadPassengers();
@@ -53,8 +53,8 @@ public class Elevator {
 
 	public void boardPassenger(Passenger passenger) throws ElevatorFullException{
 		try{
-			passengers.get(passenger.getDestination()).add(passenger);
-			if(passengers.get(passenger.getDestination()).size() > CAPACITY){
+			passengers.get(passenger.getDestination() - 1).add(passenger);
+			if(passengers.get(passenger.getDestination() - 1).size() > CAPACITY){
 				throw new ElevatorFullException("More than 10 people can not board");
 			}
 			passenger.setCurrentFloor(Building.UNDEFINED_FLOOR);
@@ -65,9 +65,9 @@ public class Elevator {
 
 	private void unloadPassengers() {
 
-		passengers.remove(passengers.get(currentFloor));
+		passengers.set(passengers.indexOf(passengers.get(currentFloor - 1)), new ArrayList<>());
 
-		for(Passenger passenger : passengers.get(currentFloor)){
+		for(Passenger passenger : passengers.get(currentFloor - 1)){
 			if(passenger instanceof Resident) {
 				floors[currentFloor - 1].getResidents().add(passenger);
 			}

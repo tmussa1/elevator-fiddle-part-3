@@ -136,6 +136,7 @@ public class ElevatorTest {
         }
         // Move to 4, checking state
         elevator.move();
+        elevator.move();
         checkElevator(elevator, 2, 0);
         elevator.move();
         checkElevator(elevator, 3, 0);

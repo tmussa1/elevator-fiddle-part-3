@@ -37,15 +37,24 @@ public class Floor {
     }
 
     public ArrayDeque<Passenger> getPassengersGoingUp() {
-        return new ArrayDeque<>();
+        if(this.upwardBound == null){
+            this.upwardBound = new ArrayDeque<>();
+        }
+        return new ArrayDeque<>(upwardBound);
     }
 
     public ArrayDeque<Passenger> getDownwardBound() {
-        return new ArrayDeque<>();
+        if(this.downwardBound == null){
+            this.downwardBound = new ArrayDeque<>();
+        }
+        return new ArrayDeque<>(downwardBound);
     }
 
     public ArrayDeque<Passenger> getResidents() {
-       return new ArrayDeque<>();
+        if(this.residents == null){
+            this.residents = new ArrayDeque<>();
+        }
+        return new ArrayDeque<>(residents);
     }
 
     public int getPassengersWaiting() {
