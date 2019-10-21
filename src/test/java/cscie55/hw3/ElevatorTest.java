@@ -153,7 +153,6 @@ public class ElevatorTest {
                 checkElevator(elevator, elevator.getCurrentFloor(), 0);
             }
             else {
-                //TODO: Because passengers carry dest of floor 5, the elevator is empty after that floor
                 checkElevator(elevator, elevator.getCurrentFloor(), 0);//Elevator.CAPACITY);
             }
         }

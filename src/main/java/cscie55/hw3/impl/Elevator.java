@@ -35,14 +35,16 @@ public class Elevator {
 		if((this.incrementFloor % (2 * Building.TOTAL_NUM_OF_FLOORS)) < Building.TOTAL_NUM_OF_FLOORS){
 			this.upOrDown = direction.UP;
 			this.currentFloor = incrementFloor % (Building.TOTAL_NUM_OF_FLOORS + 1);
+			unloadPassengers();
 			addPassengers(passengers.get(currentFloor - 1), floors[currentFloor - 1].getPassengersGoingUp());
 		} else {
 			this.upOrDown = direction.DOWN;
 			this.currentFloor = Building.TOTAL_NUM_OF_FLOORS - (this.incrementFloor % Building.TOTAL_NUM_OF_FLOORS);
+			unloadPassengers();
 			addPassengers(passengers.get(currentFloor - 1), floors[currentFloor - 1].getDownwardBound());
 		}
 
-		unloadPassengers();
+
 	}
 
 	private void addPassengers(List<Passenger> passengersEachFloor, ArrayDeque<Passenger> passengersWaiting) {
