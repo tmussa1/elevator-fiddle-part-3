@@ -10,24 +10,24 @@ public class Floor {
 
     private int id;
     private Apartment[] apartments = new Apartment[4];
-    private Collection<Passenger> residents;
-    private Collection<Passenger> upwardBound;
-    private Collection<Passenger> downwardBound;
+    private ArrayDeque<Passenger> residents;
+    private ArrayDeque<Passenger> upwardBound;
+    private ArrayDeque<Passenger> downwardBound;
 
     public Floor(int id) {
         this.id = id;
         for (int i = 0; i < apartments.length; i++) {
             apartments[i] = new Apartment(i, id);
         }
-        this.residents = getResidents();
-        this.upwardBound = getPassengersGoingUp();
-        this.downwardBound = getDownwardBound();
+        this.residents = new ArrayDeque<>();
+        this.upwardBound = new ArrayDeque<>();
+        this.downwardBound = new ArrayDeque<>();
     }
 
     public void callElevator(Passenger p) {
-        if(this.id < p.getDestination()){
+        if(this.id <= p.getDestination()){
             this.upwardBound.add(p);
-        } else if(this.id > p.getDestination()){
+        } else {
             this.downwardBound.add(p);
         }
     }
@@ -37,24 +37,15 @@ public class Floor {
     }
 
     public ArrayDeque<Passenger> getPassengersGoingUp() {
-        if(this.upwardBound == null){
-            this.upwardBound = new ArrayDeque<>();
-        }
-        return new ArrayDeque<>(upwardBound);
+        return upwardBound;
     }
 
     public ArrayDeque<Passenger> getDownwardBound() {
-        if(this.downwardBound == null){
-            this.downwardBound = new ArrayDeque<>();
-        }
-        return new ArrayDeque<>(downwardBound);
+        return downwardBound;
     }
 
     public ArrayDeque<Passenger> getResidents() {
-        if(this.residents == null){
-            this.residents = new ArrayDeque<>();
-        }
-        return new ArrayDeque<>(residents);
+        return residents;
     }
 
     public int getPassengersWaiting() {

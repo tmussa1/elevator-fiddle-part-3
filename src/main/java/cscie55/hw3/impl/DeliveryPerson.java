@@ -48,7 +48,7 @@ public class DeliveryPerson extends Person implements Passenger{
     }
 
     public int getDoorKey() {
-        return 0;
+        return address.hashCode();
     }
 
 }

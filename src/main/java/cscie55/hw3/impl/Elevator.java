@@ -35,20 +35,25 @@ public class Elevator {
 		if((this.incrementFloor % (2 * Building.TOTAL_NUM_OF_FLOORS)) < Building.TOTAL_NUM_OF_FLOORS){
 			this.upOrDown = direction.UP;
 			this.currentFloor = incrementFloor % (Building.TOTAL_NUM_OF_FLOORS + 1);
-			//addPassengers(passengers.get(currentFloor - 1), floors[currentFloor - 1].getPassengersGoingUp());
+			addPassengers(passengers.get(currentFloor - 1), floors[currentFloor - 1].getPassengersGoingUp());
 		} else {
 			this.upOrDown = direction.DOWN;
 			this.currentFloor = Building.TOTAL_NUM_OF_FLOORS - (this.incrementFloor % Building.TOTAL_NUM_OF_FLOORS);
-			//addPassengers(passengers.get(currentFloor), floors[currentFloor].getDownwardBound());
+			addPassengers(passengers.get(currentFloor - 1), floors[currentFloor - 1].getDownwardBound());
 		}
 
 		unloadPassengers();
 	}
 
-	private void addPassengers(List<Passenger> passengers, ArrayDeque<Passenger> passengersWaiting) {
-		while(passengers.size() <= CAPACITY){
-			passengers.add(passengersWaiting.poll());
+	private void addPassengers(List<Passenger> passengersEachFloor, ArrayDeque<Passenger> passengersWaiting) {
+
+		if(!passengersWaiting.isEmpty() && passengersWaiting.size() > 0){
+			while(getNumberPassengers() < CAPACITY){
+				passengersEachFloor.add(passengersWaiting.poll());
+			}
+			passengers.set((currentFloor - 1), passengersEachFloor);
 		}
+
 	}
 
 	public void boardPassenger(Passenger passenger) throws ElevatorFullException{
@@ -65,13 +70,27 @@ public class Elevator {
 
 	private void unloadPassengers() {
 
-		passengers.set(passengers.indexOf(passengers.get(currentFloor - 1)), new ArrayList<>());
+		List<Passenger> passengersElev = new ArrayList<>();
 
 		for(Passenger passenger : passengers.get(currentFloor - 1)){
+
 			if(passenger instanceof Resident) {
 				floors[currentFloor - 1].getResidents().add(passenger);
 			}
+			if(passenger.getDestination()  == currentFloor){
+				passengersElev = new ArrayList<>();
+				break;
+			} else {
+				passengersElev = passengersStillInElevator(passengersElev, passenger);
+			}
 		}
+
+		passengers.set(passengers.indexOf(passengers.get(currentFloor - 1)), passengersElev);
+	}
+
+	private List<Passenger> passengersStillInElevator(List<Passenger> passengersElev, Passenger passenger){
+		passengersElev.add(passenger);
+		return passengersElev;
 	}
 
 	public int getCurrentFloor() {
