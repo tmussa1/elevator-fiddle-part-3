@@ -5,6 +5,10 @@ import cscie55.hw3.exception.TooManyResidentsException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Floors consist of apartments and an elevator
+ * @author Tofik Mussa
+ */
 public class Apartment {
 
 	private final int id;
@@ -23,12 +27,22 @@ public class Apartment {
 		return residents;
 	}
 
+	/**
+	 *
+	 * @param id
+	 * @param floorId
+	 */
 	public Apartment(int id, int floorId){
 		this.id = id;
 		this.floorId = floorId;
 		this.address = new Address(Building.ID,floorId,id);
 	}
 
+	/**
+	 * Adds residents to apartment
+	 * @param resident
+	 * @throws TooManyResidentsException
+	 */
 	public void addResident(Resident resident) throws TooManyResidentsException {
 		if(residents.size() < MAX_RESIDENTS){
 			residents.add(resident);
@@ -53,6 +67,11 @@ public class Apartment {
 	public int getKey(){
 		return hashCode();
 	}
+
+	/**
+	 * Returns the unique identifier(hash) used to access the apartment
+	 * @return
+	 */
 	@Override
 	public int hashCode(){
 		return address.hashCode();

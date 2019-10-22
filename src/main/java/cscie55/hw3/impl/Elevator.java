@@ -7,6 +7,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
+/**
+ * This is an elevator that moves between floors, picks up and drops off passengers on its way
+ * @author Tofik Mussa
+ */
 public class Elevator {
 
 	private int currentFloor;
@@ -18,6 +22,10 @@ public class Elevator {
 	private int incrementFloor = 1;
     private static final Logger LOGGER = LogManager.getLogger(Elevator.class.getName());
 
+	/**
+	 * An elevator constructor initializes empty spots for incoming passengers
+	 * @param floors
+	 */
 	public Elevator(Floor[] floors){
 		currentFloor = 1;
 		this.floors = floors;
@@ -29,10 +37,15 @@ public class Elevator {
 		this.upOrDown = direction.UP;
 	}
 
+	/**
+	 * This methods moves between floors, unloads passengers destined to a specific floor and picks up passengers
+	 * waiting to board. It also empties the elevator when completing a full cycle
+	 */
 	public void move() {
 		this.incrementFloor++;
+		int fullTrip = 2 * Building.TOTAL_NUM_OF_FLOORS;
 
-		if((this.incrementFloor % (2 * Building.TOTAL_NUM_OF_FLOORS)) < Building.TOTAL_NUM_OF_FLOORS){
+		if((this.incrementFloor % fullTrip) < Building.TOTAL_NUM_OF_FLOORS){
 			this.upOrDown = direction.UP;
 			this.currentFloor = incrementFloor % (Building.TOTAL_NUM_OF_FLOORS + 1);
 			unloadPassengers();
@@ -44,14 +57,15 @@ public class Elevator {
 			addPassengers(passengers.get(currentFloor - 1), floors[currentFloor - 1].getDownwardBound());
 		}
 
-		int fullTrip = 2 * Building.TOTAL_NUM_OF_FLOORS;
-
 		if((fullTrip - incrementFloor) % fullTrip == 1){
 			emptyElevators();
 			incrementFloor = currentFloor;
 		}
 	}
 
+	/**
+	 * Empties elevator upon full cycle
+	 */
 	private void emptyElevators() {
 		int passengerSize = passengers.size();
 		passengers.clear();
@@ -60,6 +74,11 @@ public class Elevator {
 		}
 	}
 
+	/**
+	 * Adds passengers waiting to board
+	 * @param passengersEachFloor
+	 * @param passengersWaiting
+	 */
 	private void addPassengers(List<Passenger> passengersEachFloor, ArrayDeque<Passenger> passengersWaiting) {
 
 		if(!passengersWaiting.isEmpty() && passengersWaiting.size() > 0){
@@ -71,6 +90,11 @@ public class Elevator {
 
 	}
 
+	/**
+	 * Boards passengers
+	 * @param passenger
+	 * @throws ElevatorFullException
+	 */
 	public void boardPassenger(Passenger passenger) throws ElevatorFullException{
 		try{
 			for(int i = currentFloor - 1; i < passenger.getDestination(); i++){
@@ -85,22 +109,21 @@ public class Elevator {
 		}
 	}
 
+	/**
+	 * Unloads passengers who are trying to get off
+	 */
 	private void unloadPassengers() {
-
 		List<Passenger> passengersStillInElev = new ArrayList<>();
 		List<Passenger> pass = passengers.get(currentFloor - 1);
 
 		for(int i = 0; i < pass.size(); i++){
-
 			if(pass.get(i).getDestination()   != currentFloor){
 				passengersStillInElev.add(pass.get(i));
 			}
-
 			if(pass.get(i) instanceof Resident) {
 				floors[currentFloor - 1].getResidents().add(pass.get(i));
 			}
 		}
-
 		passengers.remove(pass);
 		passengers.add((currentFloor - 1), passengersStillInElev);
 	}
@@ -109,11 +132,19 @@ public class Elevator {
 		return currentFloor;
 	}
 
+	/**
+	 * Prints the status of an elevator
+	 * @return - status of an elevator
+	 */
 	public String toString() {
 		return "Elevator is going " + upOrDown.toString() +
 				" current Floor is "+currentFloor +" : "+ getNumberPassengers()+" passengers";
 	}
 
+	/**
+	 * Returns number of passengers currently as the elevator moves between floors
+	 * @return - number of passengers
+	 */
 	public int getNumberPassengers() {
 		return passengers.get(currentFloor - 1).size();
 	}

@@ -1,13 +1,21 @@
 package cscie55.hw3.impl;
 
-
+/**
+ * An address or location of person, resident and delivery person entities
+ * @author Tofik Mussa
+ */
 public class Address {
 
 	private int buildingId;
 	private int floorId;
 	private int apartmentId;
 
-
+	/**
+	 *
+	 * @param buildingId
+	 * @param floorId
+	 * @param apartmentId
+	 */
 	public Address(int buildingId, int floorId, int apartmentId){
 		this.buildingId = buildingId;
 		this.floorId = floorId;
@@ -38,7 +46,12 @@ public class Address {
 		this.apartmentId = apartmentId;
 	}
 
-	@Override public int hashCode(){
+	/**
+	 * Unique identifier(hash) used for limiting access to entering apartment
+	 * @return a hash
+	 */
+	@Override
+	public int hashCode(){
 		int prime = 31;
 		int result = 1;
 		result = prime * result + apartmentId;

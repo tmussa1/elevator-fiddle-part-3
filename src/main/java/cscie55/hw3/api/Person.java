@@ -2,6 +2,10 @@ package cscie55.hw3.api;
 
 import cscie55.hw3.impl.Address;
 
+/**
+ * A person abstract class
+ * @author Tofik Mussa
+ */
 public abstract class Person {
 
 	private String firstName;
@@ -10,6 +14,12 @@ public abstract class Person {
 
 	private Address address;
 
+	/**
+	 *
+	 * @param firstName
+	 * @param lastName
+	 * @param address
+	 */
 	public Person(String firstName, String lastName, Address address){
 		this.firstName = firstName;
 		this.lastName = lastName;

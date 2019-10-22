@@ -1,5 +1,9 @@
 package cscie55.hw3.api;
 
+/**
+ * Passenger interface
+ * @author Tofik Mussa
+ */
 public interface Passenger {
 
 	int getDestination();

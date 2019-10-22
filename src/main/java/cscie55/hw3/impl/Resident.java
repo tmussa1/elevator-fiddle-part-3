@@ -73,6 +73,10 @@ public class Resident extends Person implements Passenger {
         this.currentFloor = currentFloor;
     }
 
+    /**
+     * When a resident arrives on a floor, his destination gets set to -1
+     * @param arrivalFloor
+     */
     @Override
     public void arriveOnFloor(int arrivalFloor) {
         this.currentFloor = arrivalFloor;
@@ -80,6 +84,10 @@ public class Resident extends Person implements Passenger {
         this.setDestination(Building.UNDEFINED_FLOOR);
     }
 
+    /**
+     * Returns a residents door key computed in the parent class
+     * @return - door key
+     */
     public int getDoorKey() {
         return this.doorKey;
     }
